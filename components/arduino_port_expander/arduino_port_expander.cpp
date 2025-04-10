@@ -66,6 +66,10 @@ void ArduinoPortExpanderComponent::digital_write(uint8_t pin, bool value) {
     return;
   this->write_register(value ? CMD_WRITE_DIGITAL_HIGH : CMD_WRITE_DIGITAL_LOW, &pin, 1);
 }
+void ArduinoPortExpanderComponent::analog_write(uint8_t pin, uint16_t value) {
+  uint8_t buf[3] = {pin, (uint8_t)(value & 0xff), (uint8_t)(value >> 8)};
+  this->write_register(CMD_WRITE_ANALOG, buf, 3);
+}
 void ArduinoPortExpanderComponent::pin_mode(uint8_t pin, gpio::Flags flags) {
   ESP_LOGD(TAG, "Setting pin %d mode %d", pin, flags);
   if (flags == gpio::FLAG_INPUT) {
